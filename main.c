@@ -36,7 +36,7 @@ void* idle_routine(void* idx)
         res = h * func(a);
         a += h;
     }
-    while(0);
+    // while(0);
 
     pthread_exit((void*)0);
 }
