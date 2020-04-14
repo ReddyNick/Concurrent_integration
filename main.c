@@ -36,6 +36,7 @@ void* idle_routine(void* idx)
         res = h * func(a);
         a += h;
     }
+    while(0);
 
     pthread_exit((void*)0);
 }
@@ -91,12 +92,17 @@ int main(int argc, char* argv[])
         printf("Warning!\n"
                "The number of threads is bigger then the number of available CPUs (%d).\n", n_cpus);
                /*"Only %d threads will be created.\n", n_cpus, n_cpus);*/
-        num_threads = n_cpus;
+        n_cpus = num_threads;
+        // return 0;
     }
     
     if (num_threads < 0) exit(-1);
 
     pthread_t* threads = (pthread_t*)malloc(n_cpus * sizeof(pthread_t));
+    if (threads == NULL) {
+        printf("oops\n");
+        exit(-1);
+    }
     pthread_attr_t attr;
     
     void* status;
