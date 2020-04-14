@@ -27,7 +27,7 @@ double func(double x)
 
 void* idle_routine(void* idx)
 {
-   
+    //hehehe
     double a = START;
     double end = a + per_thread;
     double res = 0;
@@ -36,7 +36,7 @@ void* idle_routine(void* idx)
         res = h * func(a);
         a += h;
     }
-    // while(0);
+    
 
     pthread_exit((void*)0);
 }
@@ -85,20 +85,21 @@ int read_num_threads(int argc, char* argv[])
 int main(int argc, char* argv[])
 {
     num_threads = read_num_threads(argc, argv);
-    int n_cpus = get_nprocs();
-    assert(n_cpus > 0);
+    int n_cpus = get_nprocs(); 
+    int n = n_cpus;
+
+    
 
     if (num_threads > n_cpus) {
         printf("Warning!\n"
                "The number of threads is bigger then the number of available CPUs (%d).\n", n_cpus);
-               /*"Only %d threads will be created.\n", n_cpus, n_cpus);*/
-        n_cpus = num_threads;
-        // return 0;
+        
+        n = num_threads;
     }
     
     if (num_threads < 0) exit(-1);
 
-    pthread_t* threads = (pthread_t*)malloc(n_cpus * sizeof(pthread_t));
+    pthread_t* threads = (pthread_t*)malloc(n * sizeof(pthread_t));
     if (threads == NULL) {
         printf("oops\n");
         exit(-1);
@@ -123,7 +124,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    for (long int i = num_threads; i < n_cpus; i++) {
+    for (long int i = num_threads; i < n; i++) {
 
         ret_code = pthread_create(&threads[i], &attr, idle_routine, (void *)i); 
         
